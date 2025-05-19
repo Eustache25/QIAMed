@@ -140,10 +140,7 @@ agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
         print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
 
-if np.argmax(agent.probs1) == 0:
-    print("There is uncertainty in the diagnosis. Please investigate further with tests.")
-else:
-   print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
 
 print("\n")
 ##
@@ -155,10 +152,7 @@ agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
         print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
 
-if np.argmax(agent.probs1) == 0:
-    print("There is uncertainty in the diagnosis. Please investigate further with tests.")
-else:
-   print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
 
 print("\n")
 ##
@@ -170,8 +164,5 @@ agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
         print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
 
-if np.argmax(agent.probs1) == 0:
-    print("There is uncertainty in the diagnosis. Please investigate further with tests.")
-else:
-   print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
 
