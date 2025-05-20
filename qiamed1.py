@@ -4,11 +4,12 @@
 ##** Quantum Deep Q-Learning (QDQL) simulation for cancer diagnosis:
 ##-- Without using any quantum computing libraries
 ##-- Simulate quantum behavior by probability amplitudes and stochastic action sampling
-##-- Include both learning and multiple-class predictions
+##-- Include both learning and multiple-class predictions based on softmax probabilities
 ##
 ##** Comments:
 ##-- As the model is only at the beginning of training, it is possible to have equal probabilities on predictions. 
 ##-- when there is a high uncertainty of membership of the symptoms in the defined classes.
+##-- Hamming distance is used to improve trustworthiness 
 ##################################################################################################################
 
 import numpy as np
@@ -88,7 +89,23 @@ class QuantumDeepQLearning:
     def prediction_result(self, test_input):
         self.probs1 = self.predict_with_probabilities(test_input)
         return self.probs1
-
+    
+    def hamming_similarity(self, idx, test_input):
+        for i, item in enumerate(env):
+            if i == idx:  # Condition on the index
+                match item:
+                    case (data, label):
+                        #print(f"Index {i}:")
+                        #print("  Data:", data)
+                        #print("  Label:", label)
+                        symptom_list1 = data
+        if len(symptom_list1) != len(test_input):
+            raise ValueError("Both lists must be of the same length:", symptom_list1)
+        matches = sum(1 for x, y in zip(symptom_list1, test_input) if x == y)
+        similarity = matches / len(symptom_list1)
+        #print(symptom_list1)
+        return similarity
+        
 agent = QuantumDeepQLearning()
 
 print("Quantum Deep Q-Learning (QDQL) Simulation for Cancer Diagnosis")
@@ -138,9 +155,16 @@ print("Diagnostic predictions on all classes:")
 test_input = test_input1
 agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
-        print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
+    print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")
 
-print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+print(f"Suggested diagnosis: {cancer_types[np.argmax(agent.probs1)]} Cancer")
+
+equal = np.allclose(agent.probs1, [agent.probs1[0]] * len(agent.probs1), atol=1e-5)
+if equal:
+    print("It is a very likely choice in the uncertainty.")
+    idx = cancer_types.index(cancer_types[np.argmax(agent.probs1)])
+    similarity1 = agent.hamming_similarity(idx, test_input)
+    print(f"(Hamming Similarity: {round(similarity1 * 100, 2)}%)")
 
 print("\n")
 ##
@@ -150,9 +174,16 @@ print("Diagnostic predictions on all classes:")
 test_input = test_input2
 agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
-        print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
+    print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")  
+    
+print(f"Suggested diagnosis: {cancer_types[np.argmax(agent.probs1)]} Cancer")
 
-print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+equal = np.allclose(agent.probs1, [agent.probs1[0]] * len(agent.probs1), atol=1e-5)
+if equal:
+    print("It is a very likely choice in the uncertainty.")
+    idx = cancer_types.index(cancer_types[np.argmax(agent.probs1)])
+    similarity1 = agent.hamming_similarity(idx, test_input)
+    print(f"(Hamming Similarity: {round(similarity1 * 100, 2)}%)")
 
 print("\n")
 ##
@@ -164,5 +195,11 @@ agent.prediction_result(test_input)
 for i, prob in enumerate(agent.probs1):
         print(f"{cancer_types[i]}: {round(prob * 100, 2)}%")   
 
-print(f"Suggested predicted value corresponds to : {cancer_types[np.argmax(agent.probs1)]}")
+print(f"Suggested diagnosis: {cancer_types[np.argmax(agent.probs1)]} Cancer")
 
+equal = np.allclose(agent.probs1, [agent.probs1[0]] * len(agent.probs1), atol=1e-5)
+if equal:
+    print("It is a very likely choice in the uncertainty.")
+    idx = cancer_types.index(cancer_types[np.argmax(agent.probs1)])
+    similarity1 = agent.hamming_similarity(idx, test_input)
+    print(f"(Hamming Similarity: {round(similarity1 * 100, 2)}%)")
