@@ -56,7 +56,7 @@ num_symptoms = 19  # Simulated symptom input size
 num_actions = len(cancer_types)
 alpha = 0.5  # learning rate
 gamma = 0.95 # discount factor
-epochs = 300
+epochs = 500
 
 class QuantumDeepQLearning:
     def __init__(self, epsilon=0.1):
@@ -120,7 +120,7 @@ for epoch in range(epochs):
     action = agent.quantum_sim_policy(agent.Q[state])
     reward = 1 if action == correct else -1
     agent.Q[state][action] += alpha * (reward + gamma * np.max(agent.Q[state]) - agent.Q[state][action])
-    if epoch % 20 == 0:
+    if epoch % 50 == 0:
         print(f"Epoch {epoch}: Associated symptoms with {cancer_types[action]}: Reward = {reward}")     
 
 print("\n")
